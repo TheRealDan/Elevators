@@ -1,6 +1,6 @@
-package me.therealdan.e.events;
+package me.therealdan.events;
 
-import me.therealdan.e.Elevators;
+import me.therealdan.Elevators;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;

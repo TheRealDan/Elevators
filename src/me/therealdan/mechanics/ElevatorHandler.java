@@ -1,6 +1,6 @@
-package me.therealdan.e.mechanics;
+package me.therealdan.mechanics;
 
-import me.therealdan.e.Elevators;
+import me.therealdan.Elevators;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;

@@ -1,9 +1,9 @@
-package me.therealdan.e;
+package me.therealdan;
 
-import me.therealdan.e.events.InteractHandler;
-import me.therealdan.e.events.InventoryHandler;
-import me.therealdan.e.mechanics.EditElevator;
-import me.therealdan.e.mechanics.ElevatorHandler;
+import me.therealdan.events.InteractHandler;
+import me.therealdan.events.InventoryHandler;
+import me.therealdan.mechanics.EditElevator;
+import me.therealdan.mechanics.ElevatorHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
