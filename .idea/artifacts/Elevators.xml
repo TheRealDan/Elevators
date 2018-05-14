@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Elevators">
+    <output-path>$PROJECT_DIR$/../../../_Server/plugins</output-path>
+    <root id="archive" name="Elevators.jar">
+      <element id="module-output" name="Elevators" />
+      <element id="file-copy" path="$PROJECT_DIR$/plugin.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/config.yml" />
+    </root>
+  </artifact>
+</component>
