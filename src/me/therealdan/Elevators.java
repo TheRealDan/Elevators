@@ -8,7 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class Elevators extends JavaPlugin {
 
-    // TODO
+    // TODO !
 
     public static String MAIN, SECOND;
 
