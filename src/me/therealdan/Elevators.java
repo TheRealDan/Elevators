@@ -8,8 +8,6 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class Elevators extends JavaPlugin {
 
-    // TODO Test
-
     public static String MAIN, SECOND;
 
     public void onEnable() {
