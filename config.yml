@@ -1,3 +1,19 @@
+# Colors used in commands and feedback
 Color:
-  1: '&6'
-  2: '&7'
+  Main: '&6'
+  Secondary: '&7'
+#
+# Elevator Settings
+Elevator:
+  Panel: JUKEBOX
+  Default_Door: AIR
+  Elevator_Radius: 2
+  Sounds:
+    Volume: 0.5
+    Pitch: 0.5
+    Door_Open: BLOCK_WOODEN_DOOR_OPEN
+    Door_Close: BLOCK_WOODEN_DOOR_CLOSE
+  Icon:
+    Material: PAPER
+    Durability: 0
+    Name: "&eFloor %floor%"
