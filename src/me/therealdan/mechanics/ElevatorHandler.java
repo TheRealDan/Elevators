@@ -36,7 +36,7 @@ public class ElevatorHandler {
 
         if (isElevator(m, location, false)) {
             if (player.getGameMode() == GameMode.CREATIVE && player.getEquipment().getItemInMainHand().getType() == Material.JUKEBOX) {
-                m.editElevator.open(m, player, location);
+//                m.editElevator.open(m, player, location);
             } else {
                 open(m, player, location);
             }
@@ -190,18 +190,19 @@ public class ElevatorHandler {
     }
 
     private void save(Elevators m, Location location, Direction direction, boolean save) {
-        m.ElevatorData.set("Elevators." + location.getBlockX() + ";" + location.getBlockZ() + ".Direction", direction.toString());
-        if (save) m.saveElevatorData();
+//        m.ElevatorData.set("Elevators." + location.getBlockX() + ";" + location.getBlockZ() + ".Direction", direction.toString());
+//        if (save) m.saveElevatorData();
     }
 
     private void save(Elevators m, Location location, Material material, boolean save) {
-        m.ElevatorData.set("Elevators." + location.getBlockX() + ";" + location.getBlockZ() + ".Material", material.toString());
-        if (save) m.saveElevatorData();
+//        m.ElevatorData.set("Elevators." + location.getBlockX() + ";" + location.getBlockZ() + ".Material", material.toString());
+//        if (save) m.saveElevatorData();
     }
 
     private boolean isElevator(Elevators m, Location location, boolean exact) {
         if (exact && location.getBlock().getType() != Material.JUKEBOX) return false;
-        return m.ElevatorData.contains("Elevators." + location.getBlockX() + ";" + location.getBlockZ());
+//        return m.ElevatorData.contains("Elevators." + location.getBlockX() + ";" + location.getBlockZ());
+        return false;
     }
 
     private ItemStack floor(Elevators m, boolean current, int floor) {
