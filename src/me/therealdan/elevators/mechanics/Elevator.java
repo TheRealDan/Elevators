@@ -47,6 +47,7 @@ public class Elevator {
         add(location);
 
         this.door = defaultDoor;
+        this.doorData = 0;
 
         elevators.add(this);
     }
@@ -57,9 +58,9 @@ public class Elevator {
 
         this.x = getData().getInt("Elevators." + id + ".X");
         this.z = getData().getInt("Elevators." + id + ".Z");
-        this.y = new HashSet<>(getData().getIntegerList("Elevators." + id + ".Y"));
 
         this.door = Material.valueOf(getData().getString("Elevators." + id + ".Door"));
+        this.doorData = (byte) getData().getInt("Elevators." + id + ".DoorData");
 
         elevators.add(this);
     }
@@ -74,18 +75,25 @@ public class Elevator {
         getData().set("Elevators." + id + ".Direction", direction.toString());
         getData().set("Elevators." + id + ".X", x);
         getData().set("Elevators." + id + ".Z", z);
-        getData().set("Elevators." + id + ".Y", y);
+
+        getData().set("Elevators." + id + ".Door", door.toString());
+        getData().set("Elevators." + id + ".DoorData", doorData);
     }
 
     public void move(int floorFrom, int floorTo) {
-        for (int floor = 1; floor <= getTotalFloors(); floor++)
+        if (floorFrom == floorTo) return;
+        int totalFloors = getTotalFloors();
+        if (floorTo > totalFloors) return;
+
+        for (int floor = 1; floor <= totalFloors; floor++)
             close(floor);
 
         double distance = getPanel(floorFrom).distance(getPanel(floorTo));
+        boolean up = floorFrom < floorTo;
 
         Location center = getCenter(floorFrom);
         for (Entity entity : center.getWorld().getNearbyEntities(center, elevatorRadius, elevatorRadius, elevatorRadius))
-            entity.teleport(entity.getLocation().add(0, distance, 0));
+            entity.teleport(entity.getLocation().add(0, (up ? distance : -distance), 0));
 
         long ticksTillDoorsOpen = 10 + (long) distance;
         Bukkit.getScheduler().runTaskLater(Elevators.getInstance(), new Runnable() {
@@ -104,8 +112,8 @@ public class Elevator {
         if (volume > 0.0) center.getWorld().playSound(center, openDoor, volume, pitch);
 
         for (Block block : getElevatorDoors(center)) {
-            block.setType(previousMaterial.getOrDefault(block, Material.AIR));
-            block.setData(previousData.getOrDefault(block, (byte) 0));
+            if (previousMaterial.containsKey(block)) block.setType(previousMaterial.get(block));
+            if (previousData.containsKey(block)) block.setData(previousData.get(block));
         }
 
     }
@@ -177,16 +185,21 @@ public class Elevator {
     public int getClosestFloor(Location origin) {
         int currentFloor = 1;
         int closestFloor = 1;
-        int closestDistance = Integer.MAX_VALUE;
+
+        double closestDistance = Integer.MAX_VALUE;
         for (int y = 0; y < getWorld().getHighestBlockYAt(getX(), getZ()); y++) {
             Location location = new Location(getWorld(), getX(), y, getZ());
             if (location.getBlock().getType().equals(Elevator.panel)) {
                 add(location);
-                if (origin.distance(location) < closestDistance)
+                double distance = origin.distance(location);
+                if (distance < closestDistance) {
                     closestFloor = currentFloor;
+                    closestDistance = distance;
+                }
                 currentFloor++;
             }
         }
+
         return closestFloor;
     }
 
