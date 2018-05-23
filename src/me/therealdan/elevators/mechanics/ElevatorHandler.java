@@ -112,7 +112,13 @@ public class ElevatorHandler implements Listener {
 
         ItemStack doorIcon = new ItemStack(elevator.getDoorMaterial());
         itemMeta = doorIcon.getItemMeta();
-        itemMeta.setDisplayName(Elevators.MAIN + "Door: " + Elevators.SECOND + elevator.getDoorMaterial() + ":" + elevator.getDoorData());
+
+        try {
+            itemMeta.setDisplayName(Elevators.MAIN + "Door: " + Elevators.SECOND + elevator.getDoorMaterial().toString() + ":" + elevator.getDoorData());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         doorIcon.setItemMeta(itemMeta);
         doorIcon.setDurability(elevator.getDoorData());
 

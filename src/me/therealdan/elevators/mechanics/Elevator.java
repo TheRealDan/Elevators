@@ -253,6 +253,7 @@ public class Elevator {
     }
 
     public Material getDoorMaterial() {
+        if (door == null) door = defaultDoor;
         return door;
     }
 
