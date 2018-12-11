@@ -26,10 +26,10 @@ public class ElevatorHandler implements Listener {
         Elevator.panel = Material.valueOf(Elevators.getInstance().getConfig().getString("Elevator.Panel"));
         Elevator.defaultDoor = Material.valueOf(Elevators.getInstance().getConfig().getString("Elevator.Default_Door"));
         Elevator.elevatorRadius = Elevators.getInstance().getConfig().getInt("Elevator.Elevator_Radius");
-        Elevator.openDoor = Sound.valueOf(Elevators.getInstance().getConfig().getString("Elevator.Sounds.Door_Open"));
-        Elevator.closeDoor = Sound.valueOf(Elevators.getInstance().getConfig().getString("Elevator.Sounds.Door_Close"));
-        Elevator.volume = (float) Elevators.getInstance().getConfig().getDouble("Elevators.Sounds.Volume");
-        Elevator.pitch = (float) Elevators.getInstance().getConfig().getDouble("Elevators.Sounds.Pitch");
+        Elevator.openDoor = Elevators.getInstance().getConfig().getString("Elevator.Sounds.Door_Open");
+        Elevator.closeDoor = Elevators.getInstance().getConfig().getString("Elevator.Sounds.Door_Close");
+        Elevator.volume = (float) Elevators.getInstance().getConfig().getDouble("Elevator.Sounds.Volume");
+        Elevator.pitch = (float) Elevators.getInstance().getConfig().getDouble("Elevator.Sounds.Pitch");
     }
 
     @EventHandler
@@ -42,6 +42,7 @@ public class ElevatorHandler implements Listener {
 
         if (player.getGameMode().equals(GameMode.CREATIVE) && player.isSneaking()) {
             edit(player, elevator);
+            event.setCancelled(true);
             return;
         }
 
@@ -58,11 +59,10 @@ public class ElevatorHandler implements Listener {
         Elevator elevator = getElevator(player);
 
         if (isEditing(player)) {
-            if (event.getSlot() != 1)
-                event.setCancelled(true);
             if (event.getSlot() == 0) {
                 elevator.nextDirection();
                 edit(player, elevator);
+                event.setCancelled(true);
             }
             return;
         }

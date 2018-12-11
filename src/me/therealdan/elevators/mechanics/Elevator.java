@@ -21,7 +21,7 @@ public class Elevator {
     private static HashSet<Elevator> elevators = new HashSet<>();
 
     public static Material panel, defaultDoor;
-    public static Sound openDoor, closeDoor;
+    public static String openDoor, closeDoor;
     public static float volume, pitch;
     public static int elevatorRadius;
     private static ItemStack icon;
@@ -67,8 +67,7 @@ public class Elevator {
 
     private void save() {
         if (inUse())
-            for (int floor = 1; floor <= getTotalFloors(); floor++)
-                open(floor);
+            open();
 
         String id = UUID.randomUUID().toString();
         getData().set("Elevators." + id + ".World", world.toString());
@@ -85,8 +84,7 @@ public class Elevator {
         int totalFloors = getTotalFloors();
         if (floorTo > totalFloors) return;
 
-        for (int floor = 1; floor <= totalFloors; floor++)
-            close(floor);
+        close();
 
         double distance = getPanel(floorFrom).distance(getPanel(floorTo));
         boolean up = floorFrom < floorTo;
@@ -95,42 +93,42 @@ public class Elevator {
         for (Entity entity : center.getWorld().getNearbyEntities(center, elevatorRadius, elevatorRadius, elevatorRadius))
             entity.teleport(entity.getLocation().add(0, (up ? distance : -distance), 0));
 
-        long ticksTillDoorsOpen = 10 + (long) distance;
-        Bukkit.getScheduler().runTaskLater(Elevators.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                for (int floor = 1; floor <= getTotalFloors(); floor++)
-                    open(floor);
-            }
-        }, ticksTillDoorsOpen);
+        long ticksTillDoorsOpen = 20 + (long) distance * 2;
+        Bukkit.getScheduler().runTaskLater(Elevators.getInstance(), () -> open(), ticksTillDoorsOpen);
     }
 
-    private void open(int floor) {
+    private void open() {
         if (!inUse()) return;
 
-        Location center = getCenter(floor);
-        if (volume > 0.0) center.getWorld().playSound(center, openDoor, volume, pitch);
+        for (int floor = 1; floor <= getTotalFloors(); floor++) {
+            Location center = getCenter(floor);
+            Elevators.play(center, openDoor, volume, pitch);
 
-        for (Block block : getElevatorDoors(center)) {
-            if (previousMaterial.containsKey(block)) block.setType(previousMaterial.get(block));
-            if (previousData.containsKey(block)) block.setData(previousData.get(block));
+            for (Block block : getElevatorDoors(center)) {
+                if (previousMaterial.containsKey(block)) block.setType(previousMaterial.get(block));
+                if (previousData.containsKey(block)) block.setData(previousData.get(block));
+            }
         }
 
+        previousMaterial.clear();
+        previousData.clear();
     }
 
-    private void close(int floor) {
+    private void close() {
         if (inUse()) return;
 
-        Location center = getCenter(floor);
-        if (volume > 0.0) center.getWorld().playSound(center, closeDoor, volume, pitch);
+        for (int floor = 1; floor <= getTotalFloors(); floor++) {
+            Location center = getCenter(floor);
+            Elevators.play(center, closeDoor, volume, pitch);
 
-        for (Block block : getElevatorDoors(center)) {
-            previousMaterial.put(block, block.getType());
-            previousData.put(block, block.getData());
+            for (Block block : getElevatorDoors(center)) {
+                previousMaterial.put(block, block.getType());
+                previousData.put(block, block.getData());
 
-            if (block.getType().equals(Material.AIR)) {
-                block.setType(getDoorMaterial());
-                block.setData(getDoorData());
+                if (block.getType().equals(Material.AIR)) {
+                    block.setType(getDoorMaterial());
+                    block.setData(getDoorData());
+                }
             }
         }
     }
