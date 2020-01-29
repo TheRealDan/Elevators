@@ -35,7 +35,6 @@ public class Elevator {
 
     private HashMap<Block, Material> previousMaterial = new HashMap<>();
     private Material door;
-    private Byte doorData;
 
     private Elevator(Location location, Direction direction) {
         this.world = location.getWorld().getUID();
@@ -46,7 +45,6 @@ public class Elevator {
         add(location);
 
         this.door = defaultDoor;
-        this.doorData = 0;
 
         elevators.add(this);
     }
@@ -59,7 +57,6 @@ public class Elevator {
         this.z = getData().getInt("Elevators." + id + ".Z");
 
         this.door = Material.valueOf(getData().getString("Elevators." + id + ".Door"));
-        this.doorData = (byte) getData().getInt("Elevators." + id + ".DoorData");
 
         elevators.add(this);
     }
@@ -75,7 +72,6 @@ public class Elevator {
         getData().set("Elevators." + id + ".Z", z);
 
         getData().set("Elevators." + id + ".Door", door.toString());
-        getData().set("Elevators." + id + ".DoorData", doorData);
     }
 
     public void move(int floorFrom, int floorTo) {
@@ -144,9 +140,8 @@ public class Elevator {
         y.add(location.getBlockY());
     }
 
-    public void setDoor(Material material, byte durability) {
+    public void setDoor(Material material) {
         this.door = material;
-        this.doorData = durability;
     }
 
     public void nextDirection() {
@@ -250,10 +245,6 @@ public class Elevator {
         return door;
     }
 
-    public Byte getDoorData() {
-        return doorData;
-    }
-
     public static List<Block> getElevatorDoors(Location center) {
         List<Block> blocks = new ArrayList<>();
         for (int radius : new int[]{elevatorRadius, -elevatorRadius}) {
@@ -285,7 +276,6 @@ public class Elevator {
     public static ItemStack getIcon(int floor) {
         if (icon == null) {
             icon = new ItemStack(Material.valueOf(Elevators.getInstance().getConfig().getString("Elevator.Icon.Material")));
-            icon.setDurability((short) Elevators.getInstance().getConfig().getInt("Elevator.Icon.Durability"));
             displayName = ChatColor.translateAlternateColorCodes('&', Elevators.getInstance().getConfig().getString("Elevator.Icon.Name"));
         }
         ItemMeta itemMeta = icon.getItemMeta();
@@ -304,6 +294,7 @@ public class Elevator {
                 elevator.add(block.getLocation());
             }
         }
+
         return null;
     }
 

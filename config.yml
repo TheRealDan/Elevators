@@ -15,5 +15,4 @@ Elevator:
     Door_Close: BLOCK_WOODEN_DOOR_CLOSE
   Icon:
     Material: PAPER
-    Durability: 0
     Name: "&eFloor %floor%"

@@ -1,7 +1,9 @@
 package me.therealdan.elevators.mechanics;
 
 import me.therealdan.elevators.Elevators;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -82,7 +84,7 @@ public class ElevatorHandler implements Listener {
         if (isEditing(player)) {
             Elevator elevator = getElevator(player);
             ItemStack door = event.getInventory().getItem(1);
-            elevator.setDoor(door.getType(), (byte) door.getDurability());
+            elevator.setDoor(door.getType());
         }
 
         elevatorPanelOpen.remove(player.getUniqueId());
@@ -114,13 +116,12 @@ public class ElevatorHandler implements Listener {
         itemMeta = doorIcon.getItemMeta();
 
         try {
-            itemMeta.setDisplayName(Elevators.MAIN + "Door: " + Elevators.SECOND + elevator.getDoorMaterial().toString() + ":" + elevator.getDoorData());
+            itemMeta.setDisplayName(Elevators.MAIN + "Door: " + Elevators.SECOND + elevator.getDoorMaterial().toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         doorIcon.setItemMeta(itemMeta);
-        doorIcon.setDurability(elevator.getDoorData());
 
         inventory.setItem(0, directionIcon);
         inventory.setItem(1, doorIcon);
