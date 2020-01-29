@@ -1,4 +1,5 @@
 name: Elevators
 version: 2.0.1
 main: me.therealdan.elevators.Elevators
+api-version: "1.15"
 author: TheRealDan

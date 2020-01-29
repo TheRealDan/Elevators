@@ -34,7 +34,6 @@ public class Elevator {
     private HashSet<Integer> y = new HashSet<>();
 
     private HashMap<Block, Material> previousMaterial = new HashMap<>();
-    private HashMap<Block, Byte> previousData = new HashMap<>();
     private Material door;
     private Byte doorData;
 
@@ -106,12 +105,10 @@ public class Elevator {
 
             for (Block block : getElevatorDoors(center)) {
                 if (previousMaterial.containsKey(block)) block.setType(previousMaterial.get(block));
-                if (previousData.containsKey(block)) block.setData(previousData.get(block));
             }
         }
 
         previousMaterial.clear();
-        previousData.clear();
     }
 
     private void close() {
@@ -123,11 +120,9 @@ public class Elevator {
 
             for (Block block : getElevatorDoors(center)) {
                 previousMaterial.put(block, block.getType());
-                previousData.put(block, block.getData());
 
                 if (block.getType().equals(Material.AIR)) {
                     block.setType(getDoorMaterial());
-                    block.setData(getDoorData());
                 }
             }
         }
